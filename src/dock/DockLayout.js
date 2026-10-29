@@ -55,7 +55,7 @@ export class DockLayout {
     enable() {
         this._host = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-dock-host',
+            style_class: 'meridian-dock-host',
             reactive: true,
             track_hover: true,
             x_expand: false,
@@ -63,7 +63,7 @@ export class DockLayout {
         });
         this._inner = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-dock-inner',
+            style_class: 'meridian-dock-inner',
             x_expand: true,
             y_expand: true,
         });
@@ -273,15 +273,15 @@ export class DockLayout {
         this._socketsTray.setHorizontal(!isVertical);
 
         if (isVertical) {
-            this._host.remove_style_class_name('prime-dock-horizontal');
-            this._host.add_style_class_name('prime-dock-vertical');
-            this._inner.remove_style_class_name('prime-dock-horizontal');
-            this._inner.add_style_class_name('prime-dock-vertical');
+            this._host.remove_style_class_name('meridian-dock-horizontal');
+            this._host.add_style_class_name('meridian-dock-vertical');
+            this._inner.remove_style_class_name('meridian-dock-horizontal');
+            this._inner.add_style_class_name('meridian-dock-vertical');
         } else {
-            this._host.remove_style_class_name('prime-dock-vertical');
-            this._host.add_style_class_name('prime-dock-horizontal');
-            this._inner.remove_style_class_name('prime-dock-vertical');
-            this._inner.add_style_class_name('prime-dock-horizontal');
+            this._host.remove_style_class_name('meridian-dock-vertical');
+            this._host.add_style_class_name('meridian-dock-horizontal');
+            this._inner.remove_style_class_name('meridian-dock-vertical');
+            this._inner.add_style_class_name('meridian-dock-horizontal');
         }
 
         let posX;

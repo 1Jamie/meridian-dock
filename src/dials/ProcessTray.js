@@ -10,12 +10,12 @@ import {ProcessTracker} from '../engine/ProcessTracker.js';
 import {armTimeout} from './trayTimer.js';
 
 export const ProcessTray = GObject.registerClass({
-    GTypeName: 'PrimeProcessTray',
+    GTypeName: 'MeridianProcessTray',
 }, class ProcessTray extends St.BoxLayout {
     _init(params = {}) {
         super._init({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-card prime-tray-card',
+            style_class: 'meridian-card meridian-tray-card',
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
         });
@@ -33,7 +33,7 @@ export const ProcessTray = GObject.registerClass({
         this._pinned = new Set();
 
         this._headerButton = new St.Button({
-            style_class: 'prime-tray-header-button',
+            style_class: 'meridian-tray-header-button',
             can_focus: true,
             reactive: true,
             x_expand: true,
@@ -48,20 +48,20 @@ export const ProcessTray = GObject.registerClass({
         this._arrowIcon = new St.Icon({
             icon_name: 'pan-end-symbolic',
             icon_size: 12,
-            style_class: 'prime-tray-arrow',
+            style_class: 'meridian-tray-arrow',
             y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._titleLabel = new St.Label({
             text: _('Top Processes'),
-            style_class: 'prime-card-header',
+            style_class: 'meridian-card-header',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         this._sortBtn = new St.Button({
-            style_class: 'prime-tray-chip',
+            style_class: 'meridian-tray-chip',
             can_focus: true,
             reactive: true,
             y_align: Clutter.ActorAlign.CENTER,
@@ -72,7 +72,7 @@ export const ProcessTray = GObject.registerClass({
         });
         this._sortLabel = new St.Label({
             text: _('CPU'),
-            style_class: 'prime-tray-chip-label',
+            style_class: 'meridian-tray-chip-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         sortBox.add_child(this._sortLabel);
@@ -97,7 +97,7 @@ export const ProcessTray = GObject.registerClass({
         });
         this._summaryLabel = new St.Label({
             text: '',
-            style_class: 'prime-tray-summary',
+            style_class: 'meridian-tray-summary',
             y_align: Clutter.ActorAlign.CENTER,
             visible: false,
         });
@@ -127,7 +127,7 @@ export const ProcessTray = GObject.registerClass({
 
         this._contentBox = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-tray-content',
+            style_class: 'meridian-tray-content',
             visible: false,
             x_expand: true,
         });
@@ -136,7 +136,7 @@ export const ProcessTray = GObject.registerClass({
         for (let i = 0; i < 5; i++) {
             const row = new St.BoxLayout({
                 orientation: Clutter.Orientation.VERTICAL,
-                style_class: 'prime-process-row',
+                style_class: 'meridian-process-row',
                 reactive: true,
                 track_hover: true,
                 can_focus: true,
@@ -150,20 +150,20 @@ export const ProcessTray = GObject.registerClass({
             const pinIcon = new St.Icon({
                 icon_name: 'view-pin-symbolic',
                 icon_size: 10,
-                style_class: 'prime-proc-pin-icon',
+                style_class: 'meridian-proc-pin-icon',
                 y_align: Clutter.ActorAlign.CENTER,
                 visible: false,
             });
             const nameLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-proc-name',
+                style_class: 'meridian-proc-name',
                 x_expand: true,
                 y_align: Clutter.ActorAlign.CENTER,
             });
             nameLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
             const statLabel = new St.Label({
                 text: '0%  0MB',
-                style_class: 'prime-proc-stat',
+                style_class: 'meridian-proc-stat',
                 y_align: Clutter.ActorAlign.CENTER,
             });
             topBox.add_child(pinIcon);
@@ -173,7 +173,7 @@ export const ProcessTray = GObject.registerClass({
 
             const barArea = new St.DrawingArea({
                 height: 3,
-                style_class: 'prime-proc-bar',
+                style_class: 'meridian-proc-bar',
                 x_expand: true,
             });
             const rowState = {
@@ -368,9 +368,9 @@ export const ProcessTray = GObject.registerClass({
                 item.statLabel.set_text(`${proc.cpu}%  ${memStr}`);
                 item.pinIcon.visible = isPinned;
                 if (isPinned)
-                    item.row.add_style_class_name('prime-process-row-pinned');
+                    item.row.add_style_class_name('meridian-process-row-pinned');
                 else
-                    item.row.remove_style_class_name('prime-process-row-pinned');
+                    item.row.remove_style_class_name('meridian-process-row-pinned');
                 item.barArea.queue_repaint();
                 item.row.visible = true;
             } else {
@@ -379,7 +379,7 @@ export const ProcessTray = GObject.registerClass({
                 item.rowState.name = '';
                 item.rowState.isPinned = false;
                 item.pinIcon.visible = false;
-                item.row.remove_style_class_name('prime-process-row-pinned');
+                item.row.remove_style_class_name('meridian-process-row-pinned');
                 item.row.visible = false;
             }
         }
@@ -388,12 +388,12 @@ export const ProcessTray = GObject.registerClass({
     setHorizontal(isHorizontal) {
         this._isHorizontal = !!isHorizontal;
         if (this._isHorizontal) {
-            this.add_style_class_name('prime-tray-horizontal');
+            this.add_style_class_name('meridian-tray-horizontal');
             this._summaryLabel.visible = true;
             this._update();
             this._armTimer(this._isExpanded ? 2 : 3);
         } else {
-            this.remove_style_class_name('prime-tray-horizontal');
+            this.remove_style_class_name('meridian-tray-horizontal');
             this._summaryLabel.visible = false;
             this._summaryPin.visible = false;
             if (!this._isExpanded)

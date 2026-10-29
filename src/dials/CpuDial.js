@@ -6,7 +6,7 @@ import Pango from 'gi://Pango';
 import {getTheme, drawArc, interpolateColor} from './Themes.js';
 
 export const CpuDial = GObject.registerClass({
-    GTypeName: 'PrimeCpuDial',
+    GTypeName: 'MeridianCpuDial',
     Properties: {
         'interpolated_usage': GObject.ParamSpec.double(
             'interpolated_usage',
@@ -49,7 +49,7 @@ export const CpuDial = GObject.registerClass({
     _init(params = {}) {
         super._init({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-card prime-cpu-card',
+            style_class: 'meridian-card meridian-cpu-card',
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
@@ -96,13 +96,13 @@ export const CpuDial = GObject.registerClass({
             orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER,
-            style_class: 'prime-cpu-info-box',
+            style_class: 'meridian-cpu-info-box',
             x_expand: true,
         });
 
         this._headerLabel = new St.Label({
             text: 'CPU CLUSTER',
-            style_class: 'prime-card-header',
+            style_class: 'meridian-card-header',
             x_expand: true,
         });
         this._headerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -110,14 +110,14 @@ export const CpuDial = GObject.registerClass({
 
         this._modelLabel = new St.Label({
             text: '...',
-            style_class: 'prime-dim-label',
+            style_class: 'meridian-dim-label',
             x_expand: true,
         });
         this._modelLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
 
         this._statLabel = new St.Label({
             text: '-- MHz  |  --°C',
-            style_class: 'prime-metric-sub',
+            style_class: 'meridian-metric-sub',
             x_expand: true,
         });
         this._statLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -125,7 +125,7 @@ export const CpuDial = GObject.registerClass({
 
         this._sparkline = new St.DrawingArea({
             height: 14,
-            style_class: 'prime-cpu-sparkline',
+            style_class: 'meridian-cpu-sparkline',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });

@@ -1,4 +1,4 @@
-# Prime Overlay
+# Meridian Dock
 
 A GNOME Shell 50 extension that parks a sci-fi system monitor on the edge of the desktop. Clock, CPU, memory, disk, and network are drawn as Cairo dials. Process and connection lists tuck into trays under the cards, and a small pill in the top bar shows the numbers you actually glance at.
 
@@ -96,21 +96,21 @@ Preferences are a normal Libadwaita window: which monitor and edge, thickness, m
 
 ## Install
 
-You need GNOME Shell 50. From a clone of this repo (the path below assumes `~/src/conky-prime`):
+You need GNOME Shell 50. From a clone of this repo (the path below assumes `~/src/meridian-dock`):
 
 ```bash
 mkdir -p ~/.local/share/gnome-shell/extensions
-ln -sfn ~/src/conky-prime ~/.local/share/gnome-shell/extensions/prime-overlay@autumn
+ln -sfn ~/src/meridian-dock ~/.local/share/gnome-shell/extensions/meridian-dock@autumn
 glib-compile-schemas schemas/
 ```
 
 Then start a fresh Shell. On Wayland that means logging out and back in. On X11, Alt+F2 and `r` is enough. Turning the extension off and on again reuses the JavaScript already loaded in that Shell, so it will not pick up edits until you restart.
 
 ```bash
-gnome-extensions enable prime-overlay@autumn
+gnome-extensions enable meridian-dock@autumn
 ```
 
-Open preferences from the Extensions app, the top-bar menu, or `gnome-extensions prefs prime-overlay@autumn`.
+Open preferences from the Extensions app, the top-bar menu, or `gnome-extensions prefs meridian-dock@autumn`.
 
 The `/proc` parsers can be checked on their own, without loading the Shell UI:
 
@@ -124,10 +124,10 @@ gjs -m tests/test-engines.js
 
 `extension.js` enables and disables the extension. Preferences live in `prefs.js` and the Libadwaita pages under `prefs/`. The Shell side is `src/`: `app.js` wires things together, `dock/` places the dock and handles dragging, `dials/` is the widgets, `metrics/` polls, and `engine/` is the `/proc` and D-Bus readers. `engine/` stays free of Shell and GTK imports so `tests/test-engines.js` can run it under plain `gjs`.
 
-Settings use the schema `org.gnome.shell.extensions.prime-overlay` (`schemas/`, also named in `metadata.json`). The UUID is `prime-overlay@autumn`.
+Settings use the schema `org.gnome.shell.extensions.meridian-dock` (`schemas/`, also named in `metadata.json`). The UUID is `meridian-dock@autumn`.
 
 ```plaintext
-conky-prime/
+meridian-dock/
 ├── legacy/              # the old Conky config and Lua dashboard
 ├── extension.js
 ├── prefs.js

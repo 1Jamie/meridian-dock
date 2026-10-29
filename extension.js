@@ -1,10 +1,10 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {PrimeOverlayApp} from './src/app.js';
+import {MeridianDockApp} from './src/app.js';
 
-export default class PrimeOverlayExtension extends Extension {
+export default class MeridianDockExtension extends Extension {
     enable() {
-        this._app = new PrimeOverlayApp(this);
+        this._app = new MeridianDockApp(this);
         this._app.enable();
     }
 

@@ -7,10 +7,10 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 export const TopBarPill = GObject.registerClass({
-    GTypeName: 'PrimeTopBarPill',
+    GTypeName: 'MeridianTopBarPill',
 }, class TopBarPill extends PanelMenu.Button {
     _init(app, settings) {
-        super._init(0.0, _('Prime Overlay'));
+        super._init(0.0, _('Meridian Dock'));
 
         this._app = app;
         this._settings = settings;
@@ -18,41 +18,41 @@ export const TopBarPill = GObject.registerClass({
 
         this._box = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-topbar-box',
+            style_class: 'meridian-topbar-box',
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.CENTER,
         });
 
         this._dot = new St.Widget({
-            style_class: 'prime-topbar-dot',
+            style_class: 'meridian-topbar-dot',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._box.add_child(this._dot);
 
         this._cpuLabel = new St.Label({
             text: 'CPU --%',
-            style_class: 'prime-topbar-label',
+            style_class: 'meridian-topbar-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._box.add_child(this._cpuLabel);
 
         this._memLabel = new St.Label({
             text: 'RAM --%',
-            style_class: 'prime-topbar-label',
+            style_class: 'meridian-topbar-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._box.add_child(this._memLabel);
 
         this._tempLabel = new St.Label({
             text: '--°C',
-            style_class: 'prime-topbar-label',
+            style_class: 'meridian-topbar-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._box.add_child(this._tempLabel);
 
         this._netLabel = new St.Label({
             text: '--',
-            style_class: 'prime-topbar-label',
+            style_class: 'meridian-topbar-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._box.add_child(this._netLabel);
@@ -75,14 +75,14 @@ export const TopBarPill = GObject.registerClass({
         this.menu.removeAll();
 
         const MENU_WIDTH = 310;
-        this.menu.box.add_style_class_name('prime-menu-box');
+        this.menu.box.add_style_class_name('meridian-menu-box');
         this.menu.box.set_style(`width: ${MENU_WIDTH}px; min-width: ${MENU_WIDTH}px; max-width: ${MENU_WIDTH}px;`);
-        this.menu.actor.add_style_class_name('prime-menu-popup');
+        this.menu.actor.add_style_class_name('meridian-menu-popup');
         this.menu.actor.set_style(`width: ${MENU_WIDTH}px; min-width: ${MENU_WIDTH}px; max-width: ${MENU_WIDTH}px;`);
 
-        const titleItem = new PopupMenu.PopupMenuItem(_('Prime Dock Telemetry'), {
+        const titleItem = new PopupMenu.PopupMenuItem(_('Meridian Dock'), {
             reactive: false,
-            style_class: 'prime-menu-title',
+            style_class: 'meridian-menu-title',
         });
         titleItem.label.x_expand = true;
         titleItem.label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -93,18 +93,18 @@ export const TopBarPill = GObject.registerClass({
         const createTelemetryRow = (category) => {
             const item = new PopupMenu.PopupBaseMenuItem({
                 reactive: false,
-                style_class: 'prime-menu-telemetry-item',
+                style_class: 'meridian-menu-telemetry-item',
             });
             const catLabel = new St.Label({
                 text: category,
-                style_class: 'prime-menu-cat-label',
+                style_class: 'meridian-menu-cat-label',
                 y_align: Clutter.ActorAlign.CENTER,
             });
             catLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
             const valLabel = new St.Label({
                 text: _('Initializing...'),
-                style_class: 'prime-menu-val-label',
+                style_class: 'meridian-menu-val-label',
                 x_expand: true,
                 x_align: Clutter.ActorAlign.END,
                 y_align: Clutter.ActorAlign.CENTER,
@@ -200,10 +200,10 @@ export const TopBarPill = GObject.registerClass({
 
         if (hasAlert) {
             this._dot.set_style('background-color: #ff5252; box-shadow: 0 0 6px rgba(255, 82, 82, 0.8);');
-            this._box.add_style_class_name('prime-topbar-alert');
+            this._box.add_style_class_name('meridian-topbar-alert');
         } else {
             this._dot.set_style('');
-            this._box.remove_style_class_name('prime-topbar-alert');
+            this._box.remove_style_class_name('meridian-topbar-alert');
         }
     }
 

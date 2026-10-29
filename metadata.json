@@ -1,9 +1,9 @@
 {
-  "name": "Prime Overlay",
-  "description": "Modern, high-performance sci-fi desktop system monitor overlay inspired by Conky-Prime.",
-  "uuid": "prime-overlay@autumn",
+  "name": "Meridian Dock",
+  "description": "A sci-fi system monitor dock for GNOME Shell, with dials for the clock, CPU, memory, disk, and network.",
+  "uuid": "meridian-dock@autumn",
   "shell-version": ["50"],
-  "url": "https://github.com/1Jamie/conky-prime",
-  "settings-schema": "org.gnome.shell.extensions.prime-overlay",
+  "url": "https://github.com/1Jamie/meridian-dock",
+  "settings-schema": "org.gnome.shell.extensions.meridian-dock",
   "version": 1
 }

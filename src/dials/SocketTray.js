@@ -10,12 +10,12 @@ import {SocketTracker} from '../engine/SocketTracker.js';
 import {armTimeout} from './trayTimer.js';
 
 export const SocketTray = GObject.registerClass({
-    GTypeName: 'PrimeSocketTray',
+    GTypeName: 'MeridianSocketTray',
 }, class SocketTray extends St.BoxLayout {
     _init(params = {}) {
         super._init({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-card prime-tray-card',
+            style_class: 'meridian-card meridian-tray-card',
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
         });
@@ -30,7 +30,7 @@ export const SocketTray = GObject.registerClass({
         this._updating = false;
 
         this._headerButton = new St.Button({
-            style_class: 'prime-tray-header-button',
+            style_class: 'meridian-tray-header-button',
             can_focus: true,
             reactive: true,
             x_expand: true,
@@ -43,19 +43,19 @@ export const SocketTray = GObject.registerClass({
         this._arrowIcon = new St.Icon({
             icon_name: 'pan-end-symbolic',
             icon_size: 12,
-            style_class: 'prime-tray-arrow',
+            style_class: 'meridian-tray-arrow',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._titleLabel = new St.Label({
             text: _('Connections'),
-            style_class: 'prime-card-header',
+            style_class: 'meridian-card-header',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
 
         this._modeBtn = new St.Button({
-            style_class: 'prime-tray-chip',
+            style_class: 'meridian-tray-chip',
             can_focus: true,
             reactive: true,
             y_align: Clutter.ActorAlign.CENTER,
@@ -66,7 +66,7 @@ export const SocketTray = GObject.registerClass({
         });
         this._modeLabel = new St.Label({
             text: _('Out'),
-            style_class: 'prime-tray-chip-label',
+            style_class: 'meridian-tray-chip-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         modeBox.add_child(this._modeLabel);
@@ -85,7 +85,7 @@ export const SocketTray = GObject.registerClass({
 
         this._summaryLabel = new St.Label({
             text: '',
-            style_class: 'prime-tray-summary',
+            style_class: 'meridian-tray-summary',
             y_align: Clutter.ActorAlign.CENTER,
             visible: false,
         });
@@ -112,7 +112,7 @@ export const SocketTray = GObject.registerClass({
 
         this._contentBox = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-tray-content',
+            style_class: 'meridian-tray-content',
             visible: false,
             x_expand: true,
         });
@@ -120,7 +120,7 @@ export const SocketTray = GObject.registerClass({
         for (let i = 0; i < 5; i++) {
             const row = new St.BoxLayout({
                 orientation: Clutter.Orientation.HORIZONTAL,
-                style_class: 'prime-socket-row',
+                style_class: 'meridian-socket-row',
                 reactive: true,
                 track_hover: true,
                 can_focus: true,
@@ -129,14 +129,14 @@ export const SocketTray = GObject.registerClass({
             });
             const connLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-socket-conn',
+                style_class: 'meridian-socket-conn',
                 y_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
             connLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
             const stateLabel = new St.Label({
                 text: _('Established'),
-                style_class: 'prime-socket-badge',
+                style_class: 'meridian-socket-badge',
                 y_align: Clutter.ActorAlign.CENTER,
             });
             row.add_child(connLabel);
@@ -227,10 +227,10 @@ export const SocketTray = GObject.registerClass({
                 item.connLabel.set_text(String(conn.display || conn.remote || conn.local || '--'));
                 if (this._mode === 'listen') {
                     item.stateLabel.set_text(String(conn.alias || _('Listen')));
-                    item.stateLabel.style_class = 'prime-socket-badge prime-socket-badge-listen';
+                    item.stateLabel.style_class = 'meridian-socket-badge meridian-socket-badge-listen';
                 } else {
                     item.stateLabel.set_text(String(conn.state || _('Established')));
-                    item.stateLabel.style_class = 'prime-socket-badge';
+                    item.stateLabel.style_class = 'meridian-socket-badge';
                 }
                 item.row.visible = true;
             } else {
@@ -244,12 +244,12 @@ export const SocketTray = GObject.registerClass({
     setHorizontal(isHorizontal) {
         this._isHorizontal = !!isHorizontal;
         if (this._isHorizontal) {
-            this.add_style_class_name('prime-tray-horizontal');
+            this.add_style_class_name('meridian-tray-horizontal');
             this._summaryLabel.visible = true;
             this._update();
             this._armTimer();
         } else {
-            this.remove_style_class_name('prime-tray-horizontal');
+            this.remove_style_class_name('meridian-tray-horizontal');
             this._summaryLabel.visible = false;
             if (!this._isExpanded)
                 this._clearTimer();

@@ -7,12 +7,12 @@ import Pango from 'gi://Pango';
 import {getTheme, drawArc} from './Themes.js';
 
 export const ClockDial = GObject.registerClass({
-    GTypeName: 'PrimeClockDial',
+    GTypeName: 'MeridianClockDial',
 }, class ClockDial extends St.BoxLayout {
     _init(params = {}) {
         super._init({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-card prime-clock-card',
+            style_class: 'meridian-card meridian-clock-card',
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
@@ -52,13 +52,13 @@ export const ClockDial = GObject.registerClass({
         this._textBox = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
             y_align: Clutter.ActorAlign.CENTER,
-            style_class: 'prime-clock-text-box',
+            style_class: 'meridian-clock-text-box',
             x_expand: true,
         });
 
         this._timeLabel = new St.Label({
             text: '00:00',
-            style_class: 'prime-time-label',
+            style_class: 'meridian-time-label',
             y_align: Clutter.ActorAlign.CENTER,
         });
         this._timeLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -68,13 +68,13 @@ export const ClockDial = GObject.registerClass({
             orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
-            style_class: 'prime-clock-date-box',
+            style_class: 'meridian-clock-date-box',
             x_expand: true,
         });
 
         this._dateLabel = new St.Label({
             text: '---, -- ---',
-            style_class: 'prime-date-label',
+            style_class: 'meridian-date-label',
             x_align: Clutter.ActorAlign.END,
         });
         this._dateLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -82,7 +82,7 @@ export const ClockDial = GObject.registerClass({
 
         this._subLabel = new St.Label({
             text: 'UP: --',
-            style_class: 'prime-uptime-label',
+            style_class: 'meridian-uptime-label',
             x_align: Clutter.ActorAlign.END,
         });
         this._subLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -107,7 +107,7 @@ export const ClockDial = GObject.registerClass({
         }
 
         if (isDigital) {
-            this.add_style_class_name('prime-clock-header-mode');
+            this.add_style_class_name('meridian-clock-header-mode');
             if (this._textBox.layout_manager) {
                 this._textBox.layout_manager.orientation = Clutter.Orientation.HORIZONTAL;
             }
@@ -116,7 +116,7 @@ export const ClockDial = GObject.registerClass({
             this._dateLabel.x_align = Clutter.ActorAlign.END;
             this._subLabel.x_align = Clutter.ActorAlign.END;
         } else {
-            this.remove_style_class_name('prime-clock-header-mode');
+            this.remove_style_class_name('meridian-clock-header-mode');
             if (this._textBox.layout_manager) {
                 this._textBox.layout_manager.orientation = Clutter.Orientation.VERTICAL;
             }

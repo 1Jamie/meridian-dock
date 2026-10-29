@@ -86,7 +86,7 @@ export class EditSession {
         const cards = this._dock.getCardMap().values();
         if (this._active) {
             for (const card of cards)
-                card.add_style_class_name('prime-card-editing');
+                card.add_style_class_name('meridian-card-editing');
             this._showInspector();
             this._dock.applyRelayout();
             if (!this._stageKeyId) {
@@ -105,8 +105,8 @@ export class EditSession {
 
     _leaveEditMode(cards) {
         for (const card of cards) {
-            card.remove_style_class_name('prime-card-editing');
-            card.remove_style_class_name('prime-card-dragging');
+            card.remove_style_class_name('meridian-card-editing');
+            card.remove_style_class_name('meridian-card-dragging');
             card.set_size(-1, -1);
             card.set_position(0, 0);
             card.queue_relayout();
@@ -182,14 +182,14 @@ export class EditSession {
 
         this._inspector = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-dock-inspector',
+            style_class: 'meridian-dock-inspector',
             reactive: true,
             can_focus: true,
         });
 
         const headerBox = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-header',
+            style_class: 'meridian-inspector-header',
         });
         headerBox.add_child(new St.Icon({
             icon_name: 'preferences-system-symbolic',
@@ -198,12 +198,12 @@ export class EditSession {
         }));
         headerBox.add_child(new St.Label({
             text: _('Dock Customizer'),
-            style_class: 'prime-inspector-title',
+            style_class: 'meridian-inspector-title',
             x_expand: true,
         }));
         const doneBtn = new St.Button({
             label: _('Done'),
-            style_class: 'prime-inspector-btn prime-btn-done',
+            style_class: 'meridian-inspector-btn meridian-btn-done',
             can_focus: true,
         });
         doneBtn.connect('clicked', () => this.toggle(false));
@@ -223,11 +223,11 @@ export class EditSession {
     _addMonitorRow() {
         const row = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-row',
+            style_class: 'meridian-inspector-row',
         });
         row.add_child(new St.Label({
             text: _('Display'),
-            style_class: 'prime-inspector-sub',
+            style_class: 'meridian-inspector-sub',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         }));
@@ -238,7 +238,7 @@ export class EditSession {
             text = current === -1 ? _('Primary') : `${_('Display')} ${current + 1}`;
         const value = new St.Label({
             text,
-            style_class: 'prime-inspector-val',
+            style_class: 'meridian-inspector-val',
             y_align: Clutter.ActorAlign.CENTER,
         });
         const cycle = delta => {
@@ -255,8 +255,8 @@ export class EditSession {
             this._settings.set_int('monitor-index', next);
             value.set_text(`${_('Display')} ${next + 1}`);
         };
-        const prev = iconButton('go-previous-symbolic', 'prime-inspector-btn');
-        const next = iconButton('go-next-symbolic', 'prime-inspector-btn');
+        const prev = iconButton('go-previous-symbolic', 'meridian-inspector-btn');
+        const next = iconButton('go-next-symbolic', 'meridian-inspector-btn');
         prev.connect('clicked', () => cycle(-1));
         next.connect('clicked', () => cycle(1));
         row.add_child(prev);
@@ -268,11 +268,11 @@ export class EditSession {
     _addEdgeRow() {
         const row = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-row',
+            style_class: 'meridian-inspector-row',
         });
         row.add_child(new St.Label({
             text: _('Edge'),
-            style_class: 'prime-inspector-sub',
+            style_class: 'meridian-inspector-sub',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         }));
@@ -284,7 +284,7 @@ export class EditSession {
         ];
         const current = this._dock.getDockPosition();
         for (const edge of edges) {
-            const style = `prime-inspector-btn ${current === edge.id ? 'prime-btn-active' : ''}`;
+            const style = `meridian-inspector-btn ${current === edge.id ? 'meridian-btn-active' : ''}`;
             const button = labeledButton(edge.icon, edge.label, style);
             button.connect('clicked', () => {
                 this._settings.set_string('dock-position', edge.id);
@@ -298,23 +298,23 @@ export class EditSession {
     _addSpanRow() {
         const row = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-row',
+            style_class: 'meridian-inspector-row',
         });
         row.add_child(new St.Label({
             text: _('Span'),
-            style_class: 'prime-inspector-sub',
+            style_class: 'meridian-inspector-sub',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         }));
         const mode = this._settings.get_string('dock-length-mode');
         const fillBtn = new St.Button({
             label: _('Full Edge'),
-            style_class: `prime-inspector-btn ${mode === 'fill' ? 'prime-btn-active' : ''}`,
+            style_class: `meridian-inspector-btn ${mode === 'fill' ? 'meridian-btn-active' : ''}`,
             can_focus: true,
         });
         const compactBtn = new St.Button({
             label: _('Floating Island'),
-            style_class: `prime-inspector-btn ${mode === 'compact' ? 'prime-btn-active' : ''}`,
+            style_class: `meridian-inspector-btn ${mode === 'compact' ? 'meridian-btn-active' : ''}`,
             can_focus: true,
         });
         fillBtn.connect('clicked', () => {
@@ -333,18 +333,18 @@ export class EditSession {
     _addThicknessRow() {
         const row = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-row',
+            style_class: 'meridian-inspector-row',
         });
         row.add_child(new St.Label({
             text: _('Thickness'),
-            style_class: 'prime-inspector-sub',
+            style_class: 'meridian-inspector-sub',
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         }));
         const current = this._settings.get_int('dock-thickness');
         const value = new St.Label({
             text: `${current}px`,
-            style_class: 'prime-inspector-val',
+            style_class: 'meridian-inspector-val',
             y_align: Clutter.ActorAlign.CENTER,
         });
         const change = delta => {
@@ -354,12 +354,12 @@ export class EditSession {
         };
         const minus = new St.Button({
             label: '-10',
-            style_class: 'prime-inspector-btn',
+            style_class: 'meridian-inspector-btn',
             can_focus: true,
         });
         const plus = new St.Button({
             label: _('+10'),
-            style_class: 'prime-inspector-btn',
+            style_class: 'meridian-inspector-btn',
             can_focus: true,
         });
         minus.connect('clicked', () => change(-10));
@@ -373,15 +373,15 @@ export class EditSession {
     _addModuleRow() {
         const stash = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
-            style_class: 'prime-inspector-stash',
+            style_class: 'meridian-inspector-stash',
         });
         stash.add_child(new St.Label({
             text: _('Modules'),
-            style_class: 'prime-inspector-sub',
+            style_class: 'meridian-inspector-sub',
         }));
         const modulesRow = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-inspector-modules-row',
+            style_class: 'meridian-inspector-modules-row',
         });
         const modules = [
             {id: 'show-clock', name: _('Clock')},
@@ -395,7 +395,7 @@ export class EditSession {
         for (const module of modules) {
             const shown = this._settings.get_boolean(module.id);
             const button = new St.Button({
-                style_class: `prime-inspector-chip ${shown ? 'prime-chip-active' : ''}`,
+                style_class: `meridian-inspector-chip ${shown ? 'meridian-chip-active' : ''}`,
                 can_focus: true,
             });
             const box = new St.BoxLayout({
@@ -418,9 +418,9 @@ export class EditSession {
                 this._settings.set_boolean(module.id, next);
                 icon.icon_name = next ? 'emblem-ok-symbolic' : 'list-add-symbolic';
                 if (next)
-                    button.add_style_class_name('prime-chip-active');
+                    button.add_style_class_name('meridian-chip-active');
                 else
-                    button.remove_style_class_name('prime-chip-active');
+                    button.remove_style_class_name('meridian-chip-active');
             });
             modulesRow.add_child(button);
         }
@@ -459,7 +459,7 @@ export class EditSession {
         this._draggedCard = card;
 
         this._dragPlaceholder = new St.Widget({
-            style_class: 'prime-dock-placeholder',
+            style_class: 'meridian-dock-placeholder',
             reactive: false,
             x_expand: isVertical,
             y_expand: !isVertical,
@@ -470,7 +470,7 @@ export class EditSession {
             inner.remove_child(card);
         Main.layoutManager.uiGroup.add_child(card);
         Main.layoutManager.uiGroup.set_child_above_sibling(card, null);
-        card.add_style_class_name('prime-card-dragging');
+        card.add_style_class_name('meridian-card-dragging');
         card.set_size(cardW, cardH);
         card.set_position(cardStageX, cardStageY);
 
@@ -534,7 +534,7 @@ export class EditSession {
 
         const card = this._draggedCard;
         const inner = this._dock.getInner();
-        card.remove_style_class_name('prime-card-dragging');
+        card.remove_style_class_name('meridian-card-dragging');
         if (card.get_parent() === Main.layoutManager.uiGroup)
             Main.layoutManager.uiGroup.remove_child(card);
         if (this._dragPlaceholder && this._dragPlaceholder.get_parent() === inner) {

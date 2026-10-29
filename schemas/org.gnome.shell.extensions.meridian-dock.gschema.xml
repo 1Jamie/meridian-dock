@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="prime-overlay">
-  <enum id="org.gnome.shell.extensions.prime-overlay.Position">
+<schemalist gettext-domain="meridian-dock">
+  <enum id="org.gnome.shell.extensions.meridian-dock.Position">
     <value nick="right" value="0"/>
     <value nick="left" value="1"/>
     <value nick="top" value="2"/>
     <value nick="bottom" value="3"/>
   </enum>
 
-  <enum id="org.gnome.shell.extensions.prime-overlay.DockLengthMode">
+  <enum id="org.gnome.shell.extensions.meridian-dock.DockLengthMode">
     <value nick="fill" value="0"/>
     <value nick="compact" value="1"/>
   </enum>
 
-  <enum id="org.gnome.shell.extensions.prime-overlay.DockAlignment">
+  <enum id="org.gnome.shell.extensions.meridian-dock.DockAlignment">
     <value nick="center" value="0"/>
     <value nick="start" value="1"/>
     <value nick="end" value="2"/>
   </enum>
 
-  <enum id="org.gnome.shell.extensions.prime-overlay.Theme">
+  <enum id="org.gnome.shell.extensions.meridian-dock.Theme">
     <value nick="cyan" value="0"/>
     <value nick="white" value="1"/>
     <value nick="amber" value="2"/>
     <value nick="green" value="3"/>
   </enum>
 
-  <schema id="org.gnome.shell.extensions.prime-overlay" path="/org/gnome/shell/extensions/prime-overlay/">
+  <schema id="org.gnome.shell.extensions.meridian-dock" path="/org/gnome/shell/extensions/meridian-dock/">
     <!-- Placement & Target Display -->
     <key name="monitor-index" type="i">
       <default>-1</default>
@@ -33,19 +33,19 @@
       <description>-1 for primary monitor, or 0, 1, 2 for specific display index.</description>
     </key>
 
-    <key name="dock-position" enum="org.gnome.shell.extensions.prime-overlay.Position">
+    <key name="dock-position" enum="org.gnome.shell.extensions.meridian-dock.Position">
       <default>'right'</default>
       <summary>Screen Edge Anchor</summary>
       <description>Edge of the monitor where the dock is anchored: right, left, top, or bottom.</description>
     </key>
 
-    <key name="dock-length-mode" enum="org.gnome.shell.extensions.prime-overlay.DockLengthMode">
+    <key name="dock-length-mode" enum="org.gnome.shell.extensions.meridian-dock.DockLengthMode">
       <default>'fill'</default>
       <summary>Dock Length Span Mode</summary>
       <description>'fill' for full edge with struts, 'compact' for floating island dock.</description>
     </key>
 
-    <key name="dock-alignment" enum="org.gnome.shell.extensions.prime-overlay.DockAlignment">
+    <key name="dock-alignment" enum="org.gnome.shell.extensions.meridian-dock.DockAlignment">
       <default>'center'</default>
       <summary>Dock Alignment</summary>
       <description>Alignment along the anchored edge when in floating island mode: center, start, or end.</description>
@@ -100,7 +100,7 @@
     </key>
 
     <!-- Appearance & Aesthetics -->
-    <key name="theme" enum="org.gnome.shell.extensions.prime-overlay.Theme">
+    <key name="theme" enum="org.gnome.shell.extensions.meridian-dock.Theme">
       <default>'cyan'</default>
       <summary>Color theme</summary>
       <description>Visual accent color scheme: cyan, white, amber, or green.</description>

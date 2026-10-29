@@ -19,7 +19,7 @@ import {DockLayout} from './dock/DockLayout.js';
 import {EditSession} from './dock/EditSession.js';
 import {MetricLoop} from './metrics/MetricLoop.js';
 
-export class PrimeOverlayApp {
+export class MeridianDockApp {
     constructor(extension) {
         this._ext = extension;
         this._settings = extension.getSettings();
@@ -38,7 +38,7 @@ export class PrimeOverlayApp {
         this._cpu = new CpuDial({theme, scale, enableInterpolation: enableInterp});
         this._memDiskRow = new St.BoxLayout({
             orientation: Clutter.Orientation.HORIZONTAL,
-            style_class: 'prime-row-2col',
+            style_class: 'meridian-row-2col',
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
         });
@@ -283,7 +283,7 @@ export class PrimeOverlayApp {
         if (showPill) {
             if (!this._topBarPill) {
                 this._topBarPill = new TopBarPill(this, this._settings);
-                Main.panel.addToStatusArea('prime-overlay-pill', this._topBarPill, 1, 'right');
+                Main.panel.addToStatusArea('meridian-dock-pill', this._topBarPill, 1, 'right');
                 this._loop.setPill(this._topBarPill);
             }
         } else if (this._topBarPill) {

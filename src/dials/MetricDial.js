@@ -6,7 +6,7 @@ import Pango from 'gi://Pango';
 import {getTheme, drawArc} from './Themes.js';
 
 export const MetricDial = GObject.registerClass({
-    GTypeName: 'PrimeMetricDial',
+    GTypeName: 'MeridianMetricDial',
     Properties: {
         'interpolated_value': GObject.ParamSpec.double(
             'interpolated_value',
@@ -50,7 +50,7 @@ export const MetricDial = GObject.registerClass({
         const isCompact = !!params.compact;
         super._init({
             orientation: isCompact ? Clutter.Orientation.VERTICAL : Clutter.Orientation.HORIZONTAL,
-            style_class: `prime-card prime-${params.type || 'metric'}-card ${isCompact ? 'prime-mini-card' : ''}`,
+            style_class: `meridian-card meridian-${params.type || 'metric'}-card ${isCompact ? 'meridian-mini-card' : ''}`,
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.FILL,
             x_expand: true,
@@ -87,7 +87,7 @@ export const MetricDial = GObject.registerClass({
         if (isCompact) {
             this._headerLabel = new St.Label({
                 text: this._title,
-                style_class: 'prime-card-header',
+                style_class: 'meridian-card-header',
                 x_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
@@ -108,13 +108,13 @@ export const MetricDial = GObject.registerClass({
                 orientation: Clutter.Orientation.VERTICAL,
                 x_align: Clutter.ActorAlign.CENTER,
                 y_align: Clutter.ActorAlign.CENTER,
-                style_class: 'prime-mini-stat-box',
+                style_class: 'meridian-mini-stat-box',
                 x_expand: true,
             });
 
             this._valueLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-mini-value',
+                style_class: 'meridian-mini-value',
                 x_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
@@ -123,7 +123,7 @@ export const MetricDial = GObject.registerClass({
 
             this._subLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-dim-label',
+                style_class: 'meridian-dim-label',
                 x_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
@@ -147,13 +147,13 @@ export const MetricDial = GObject.registerClass({
                 orientation: Clutter.Orientation.VERTICAL,
                 x_align: Clutter.ActorAlign.START,
                 y_align: Clutter.ActorAlign.CENTER,
-                style_class: 'prime-metric-info-box',
+                style_class: 'meridian-metric-info-box',
                 x_expand: true,
             });
 
             this._headerLabel = new St.Label({
                 text: 'NETWORK',
-                style_class: 'prime-card-header',
+                style_class: 'meridian-card-header',
                 x_expand: true,
             });
             this._headerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -161,7 +161,7 @@ export const MetricDial = GObject.registerClass({
 
             this._downLabel = new St.Label({
                 text: '0 B/s',
-                style_class: 'prime-net-down-label',
+                style_class: 'meridian-net-down-label',
                 x_expand: true,
             });
             this._downLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -169,7 +169,7 @@ export const MetricDial = GObject.registerClass({
 
             this._upLabel = new St.Label({
                 text: '0 B/s',
-                style_class: 'prime-net-up-label',
+                style_class: 'meridian-net-up-label',
                 x_expand: true,
             });
             this._upLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -179,18 +179,18 @@ export const MetricDial = GObject.registerClass({
                 orientation: Clutter.Orientation.HORIZONTAL,
                 x_align: Clutter.ActorAlign.START,
                 y_align: Clutter.ActorAlign.CENTER,
-                style_class: 'prime-net-sub-box',
+                style_class: 'meridian-net-sub-box',
                 x_expand: true,
             });
 
             this._statusDot = new St.Widget({
-                style_class: 'prime-net-status-dot',
+                style_class: 'meridian-net-status-dot',
                 y_align: Clutter.ActorAlign.CENTER,
             });
 
             this._subLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-dim-label',
+                style_class: 'meridian-dim-label',
                 y_align: Clutter.ActorAlign.CENTER,
                 x_expand: true,
             });
@@ -220,13 +220,13 @@ export const MetricDial = GObject.registerClass({
                 orientation: Clutter.Orientation.VERTICAL,
                 x_align: Clutter.ActorAlign.START,
                 y_align: Clutter.ActorAlign.CENTER,
-                style_class: 'prime-metric-info-box',
+                style_class: 'meridian-metric-info-box',
                 x_expand: true,
             });
 
             this._headerLabel = new St.Label({
                 text: this._title,
-                style_class: 'prime-card-header',
+                style_class: 'meridian-card-header',
                 x_expand: true,
             });
             this._headerLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -234,7 +234,7 @@ export const MetricDial = GObject.registerClass({
 
             this._valueLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-metric-value',
+                style_class: 'meridian-metric-value',
                 x_expand: true,
             });
             this._valueLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
@@ -242,7 +242,7 @@ export const MetricDial = GObject.registerClass({
 
             this._subLabel = new St.Label({
                 text: '--',
-                style_class: 'prime-dim-label',
+                style_class: 'meridian-dim-label',
                 x_expand: true,
             });
             this._subLabel.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
