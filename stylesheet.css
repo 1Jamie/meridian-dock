@@ -1,0 +1,505 @@
+/* Prime Overlay - Modern Futuristic System HUD Styles */
+
+.prime-container {
+    padding: 0;
+    margin: 0;
+    spacing: 0;
+}
+
+.prime-card {
+    background-color: rgba(12, 16, 24, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 8px 12px;
+    spacing: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.prime-card:hover {
+    background-color: rgba(16, 22, 34, 0.75);
+    border-color: rgba(0, 229, 255, 0.25);
+}
+
+/* 2-Column Grid Row for Memory & Storage */
+.prime-row-2col {
+    spacing: 8px;
+}
+
+.prime-mini-card {
+    padding: 8px 8px;
+    spacing: 3px;
+}
+
+.prime-mini-stat-box {
+    margin-top: 2px;
+    spacing: 1px;
+}
+
+.prime-mini-value {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: #ffffff;
+    font-family: Cantarell;
+}
+
+/* Clock Card */
+.prime-clock-card {
+    padding: 8px 12px;
+}
+
+.prime-clock-header-mode {
+    padding: 8px 14px;
+}
+
+.prime-clock-text-box {
+    margin-left: 8px;
+    spacing: 2px;
+}
+
+.prime-clock-header-mode .prime-clock-text-box {
+    margin-left: 0;
+}
+
+.prime-time-label {
+    font-size: 28pt;
+    font-weight: 300;
+    color: #ffffff;
+    font-family: Cantarell;
+    letter-spacing: 0.5px;
+}
+
+
+.prime-clock-date-box {
+    spacing: 2px;
+}
+
+.prime-date-label {
+    font-size: 9.5pt;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.90);
+    letter-spacing: 0.8px;
+}
+
+.prime-uptime-label {
+    font-size: 8pt;
+    font-weight: 600;
+    color: rgba(0, 229, 255, 0.85);
+    letter-spacing: 0.6px;
+}
+
+/* Card Header */
+.prime-card-header {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.prime-cpu-info-box,
+.prime-metric-info-box {
+    margin-left: 8px;
+    spacing: 3px;
+}
+
+.prime-cpu-sparkline {
+    margin-top: 3px;
+}
+
+.prime-metric-value {
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.prime-net-down-label {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #00e5ff;
+    font-family: Cantarell;
+}
+
+.prime-net-up-label {
+    font-size: 10pt;
+    font-weight: 600;
+    color: #00a6f3;
+    font-family: Cantarell;
+}
+
+.prime-net-sub-box {
+    spacing: 5px;
+    margin-top: 1px;
+}
+
+.prime-net-status-dot {
+    width: 5px;
+    height: 5px;
+    background-color: #00e5ff;
+    border-radius: 3px;
+    box-shadow: 0 0 3px rgba(0, 229, 255, 0.6);
+}
+
+.prime-metric-sub {
+    font-size: 8.5pt;
+    font-weight: 500;
+    color: rgba(0, 229, 255, 0.85);
+}
+
+.prime-dim-label {
+    font-size: 7.5pt;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.60);
+}
+
+
+/* Expandable Trays */
+.prime-tray-card {
+    padding: 6px 10px;
+    spacing: 4px;
+}
+
+.prime-tray-header-button {
+    padding: 3px 4px;
+    border-radius: 6px;
+    background-color: transparent;
+    border: none;
+}
+
+.prime-tray-header-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.prime-tray-arrow {
+    font-size: 7.5pt;
+    color: rgba(0, 229, 255, 0.9);
+    margin-right: 6px;
+}
+
+.prime-tray-content {
+    margin-top: 4px;
+    spacing: 3px;
+}
+
+/* Tray Header Chips (Sort & Mode toggles) */
+.prime-tray-chip {
+    padding: 1px 6px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    margin-right: 4px;
+}
+
+.prime-tray-chip:hover {
+    background-color: rgba(0, 229, 255, 0.18);
+    border-color: rgba(0, 229, 255, 0.40);
+}
+
+.prime-tray-chip-label {
+    font-size: 6.5pt;
+    font-weight: 700;
+    color: #00e5ff;
+    font-family: Cantarell, sans-serif;
+}
+
+.prime-process-row,
+.prime-socket-row {
+    padding: 3px 5px;
+    spacing: 3px;
+    border-radius: 4px;
+}
+
+.prime-process-row:hover,
+.prime-socket-row:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.prime-process-row-pinned {
+    background-color: rgba(0, 229, 255, 0.08);
+}
+
+.prime-process-row-pinned:hover {
+    background-color: rgba(0, 229, 255, 0.16);
+}
+
+.prime-proc-pin-icon {
+    color: #00e5ff;
+    margin-right: 4px;
+}
+
+.prime-proc-name {
+    font-size: 7.5pt;
+    color: rgba(255, 255, 255, 0.90);
+    font-family: monospace;
+}
+
+.prime-proc-stat {
+    font-size: 7.5pt;
+    color: rgba(0, 229, 255, 0.85);
+    font-family: monospace;
+}
+
+.prime-proc-bar {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    border-radius: 2px;
+}
+
+.prime-socket-conn {
+    font-size: 7.5pt;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: monospace;
+}
+
+.prime-socket-badge {
+    font-size: 6.5pt;
+    font-weight: 600;
+    color: #00e676;
+    background-color: rgba(0, 230, 118, 0.14);
+    border-radius: 3px;
+    padding: 1px 5px;
+}
+
+.prime-socket-badge-listen {
+    color: #00e5ff;
+    background-color: rgba(0, 229, 255, 0.14);
+}
+
+/* Inner Column */
+.prime-inner-column {
+    spacing: 8px;
+}
+
+/* Top Bar Micro-Tray Pill */
+.prime-topbar-box {
+    spacing: 6px;
+    padding: 0 6px;
+}
+
+.prime-topbar-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 4px;
+    background-color: #00e5ff;
+    transition-duration: 250ms;
+}
+
+.prime-topbar-label {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.88);
+    font-family: Cantarell;
+}
+
+.prime-topbar-alert .prime-topbar-label {
+    color: #ff5252;
+}
+
+.prime-menu-title {
+    font-weight: 700;
+    color: #00e5ff;
+}
+
+/* Fixed-width TopBar Dropdown Menu */
+.prime-menu-popup,
+.prime-menu-box,
+.prime-menu-popup .popup-menu-content {
+    width: 310px;
+    min-width: 310px;
+    max-width: 310px;
+}
+
+.prime-menu-telemetry-item {
+    spacing: 12px;
+    padding: 5px 12px;
+}
+
+.prime-menu-cat-label {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #00e5ff;
+    font-family: Cantarell;
+    min-width: 65px;
+}
+
+.prime-menu-val-label {
+    font-size: 8.5pt;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    font-family: Cantarell, monospace;
+}
+
+/* =========================================================================
+   Pure Dock & In-Situ Customizer Palette
+   ========================================================================= */
+
+.prime-dock-host {
+    transition-duration: 200ms;
+}
+
+.prime-dock-inner {
+    spacing: 8px;
+}
+
+.prime-dock-horizontal .prime-dock-inner {
+    spacing: 12px;
+}
+
+/* Horizontal card adaptations */
+.prime-dock-horizontal .prime-card {
+    margin: 0;
+    padding: 6px 12px;
+}
+
+/* Placeholder for Float-and-Placeholder Live Drag Reordering */
+.prime-dock-placeholder {
+    border: 2px dashed rgba(0, 229, 255, 0.6) !important;
+    background-color: rgba(0, 229, 255, 0.08) !important;
+    border-radius: 12px;
+    margin: 4px;
+    box-shadow: none !important;
+}
+
+.prime-card-editing {
+    border: 2px solid rgba(0, 229, 255, 0.6) !important;
+    background-color: rgba(16, 26, 42, 0.90) !important;
+    box-shadow: none !important;
+}
+
+.prime-card-editing:hover {
+    border: 2px solid #00e5ff !important;
+    background-color: rgba(20, 34, 56, 0.95) !important;
+    box-shadow: none !important;
+}
+
+.prime-card-dragging {
+    border: 2px solid #00e5ff !important;
+    background-color: rgba(24, 42, 70, 0.98) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Horizontal summary badges for Process & Connection Trays */
+.prime-tray-summary {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: #00e5ff;
+    font-family: Cantarell;
+    margin-left: 6px;
+}
+
+.prime-tray-horizontal {
+    padding: 6px 10px;
+}
+
+/* On-Screen Dock Inspector Palette */
+.prime-dock-inspector {
+    background-color: rgba(12, 16, 26, 0.95);
+    border: 1px solid rgba(0, 229, 255, 0.4);
+    border-radius: 16px;
+    padding: 14px 16px;
+    spacing: 10px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.85);
+    min-width: 320px;
+}
+
+.prime-inspector-header {
+    spacing: 12px;
+    margin-bottom: 2px;
+}
+
+.prime-inspector-title {
+    font-size: 10.5pt;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: Cantarell;
+}
+
+.prime-inspector-row {
+    spacing: 8px;
+    y_align: center;
+}
+
+.prime-inspector-sub {
+    font-size: 8.5pt;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    font-family: Cantarell;
+}
+
+.prime-inspector-val {
+    font-size: 9pt;
+    font-weight: 700;
+    color: #00e5ff;
+    font-family: Cantarell, monospace;
+    min-width: 65px;
+    text-align: center;
+}
+
+.prime-inspector-btn {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 8pt;
+    font-weight: 600;
+    color: #ffffff;
+    transition-duration: 150ms;
+}
+
+.prime-inspector-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 229, 255, 0.4);
+}
+
+.prime-btn-active {
+    background-color: rgba(0, 229, 255, 0.25) !important;
+    border-color: #00e5ff !important;
+    color: #00e5ff !important;
+}
+
+.prime-btn-done {
+    background-color: rgba(0, 229, 255, 0.3) !important;
+    border: 1px solid #00e5ff !important;
+    color: #00e5ff !important;
+    padding: 4px 12px;
+}
+
+.prime-btn-done:hover {
+    background-color: rgba(0, 229, 255, 0.5) !important;
+    color: #ffffff !important;
+}
+
+/* Module Stash Chips in Inspector */
+.prime-inspector-stash {
+    spacing: 6px;
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prime-inspector-modules-row {
+    spacing: 6px;
+}
+
+.prime-inspector-chip {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    padding: 3px 8px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    transition-duration: 120ms;
+}
+
+.prime-inspector-chip:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.prime-chip-active {
+    background-color: rgba(0, 229, 255, 0.2) !important;
+    border-color: rgba(0, 229, 255, 0.5) !important;
+    color: #00e5ff !important;
+}
+
+
+

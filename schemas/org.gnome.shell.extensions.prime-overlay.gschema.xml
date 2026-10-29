@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="prime-overlay">
+  <enum id="org.gnome.shell.extensions.prime-overlay.Position">
+    <value nick="right" value="0"/>
+    <value nick="left" value="1"/>
+    <value nick="top" value="2"/>
+    <value nick="bottom" value="3"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.prime-overlay.DockLengthMode">
+    <value nick="fill" value="0"/>
+    <value nick="compact" value="1"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.prime-overlay.DockAlignment">
+    <value nick="center" value="0"/>
+    <value nick="start" value="1"/>
+    <value nick="end" value="2"/>
+  </enum>
+
+  <enum id="org.gnome.shell.extensions.prime-overlay.Theme">
+    <value nick="cyan" value="0"/>
+    <value nick="white" value="1"/>
+    <value nick="amber" value="2"/>
+    <value nick="green" value="3"/>
+  </enum>
+
+  <schema id="org.gnome.shell.extensions.prime-overlay" path="/org/gnome/shell/extensions/prime-overlay/">
+    <!-- Placement & Target Display -->
+    <key name="monitor-index" type="i">
+      <default>-1</default>
+      <summary>Target Monitor</summary>
+      <description>-1 for primary monitor, or 0, 1, 2 for specific display index.</description>
+    </key>
+
+    <key name="dock-position" enum="org.gnome.shell.extensions.prime-overlay.Position">
+      <default>'right'</default>
+      <summary>Screen Edge Anchor</summary>
+      <description>Edge of the monitor where the dock is anchored: right, left, top, or bottom.</description>
+    </key>
+
+    <key name="dock-length-mode" enum="org.gnome.shell.extensions.prime-overlay.DockLengthMode">
+      <default>'fill'</default>
+      <summary>Dock Length Span Mode</summary>
+      <description>'fill' for full edge with struts, 'compact' for floating island dock.</description>
+    </key>
+
+    <key name="dock-alignment" enum="org.gnome.shell.extensions.prime-overlay.DockAlignment">
+      <default>'center'</default>
+      <summary>Dock Alignment</summary>
+      <description>Alignment along the anchored edge when in floating island mode: center, start, or end.</description>
+    </key>
+
+    <key name="dock-thickness" type="i">
+      <default>320</default>
+      <summary>Dock Thickness in Pixels</summary>
+      <description>Width of vertical dock or height of horizontal dock (200 to 480px).</description>
+    </key>
+
+    <key name="dock-margin" type="i">
+      <default>10</default>
+      <summary>Dock Edge Margin</summary>
+      <description>Margin distance in pixels from the screen edge.</description>
+    </key>
+
+    <key name="dock-corner-radius" type="i">
+      <default>14</default>
+      <summary>Dock Corner Radius</summary>
+      <description>Border radius for dock container and cards in pixels.</description>
+    </key>
+
+    <key name="dock-opacity" type="i">
+      <default>70</default>
+      <summary>Dock Background Opacity</summary>
+      <description>Background opacity for the dock container in percent (0 to 100).</description>
+    </key>
+
+    <key name="card-opacity" type="i">
+      <default>65</default>
+      <summary>Card Background Opacity</summary>
+      <description>Background opacity for telemetry cards in percent (0 to 100).</description>
+    </key>
+
+    <key name="dock-affects-struts" type="b">
+      <default>true</default>
+      <summary>Reserve Screen Space (Struts)</summary>
+      <description>Whether the dock reserves screen space so windows don't overlap it.</description>
+    </key>
+
+    <key name="show-in-overview" type="b">
+      <default>true</default>
+      <summary>Show in Overview</summary>
+      <description>Whether to keep the dock visible in GNOME overview.</description>
+    </key>
+
+    <key name="scale-factor" type="d">
+      <default>1.0</default>
+      <summary>UI Scale</summary>
+      <description>Scale factor for the dials and text (0.75 - 1.5).</description>
+    </key>
+
+    <!-- Appearance & Aesthetics -->
+    <key name="theme" enum="org.gnome.shell.extensions.prime-overlay.Theme">
+      <default>'cyan'</default>
+      <summary>Color theme</summary>
+      <description>Visual accent color scheme: cyan, white, amber, or green.</description>
+    </key>
+
+    <key name="clock-style" type="s">
+      <default>'concentric'</default>
+      <summary>Clock Dial Style</summary>
+      <description>Visual style for the clock: 'concentric', 'analog', or 'digital'.</description>
+    </key>
+
+    <key name="temp-unit" type="s">
+      <default>'c'</default>
+      <summary>Temperature Unit</summary>
+      <description>'c' for Celsius or 'f' for Fahrenheit.</description>
+    </key>
+
+    <key name="update-interval" type="i">
+      <default>1</default>
+      <summary>Update interval</summary>
+      <description>Polling rate for core metrics in seconds (1 to 10).</description>
+    </key>
+
+    <key name="enable-interpolation" type="b">
+      <default>true</default>
+      <summary>Enable Metric Interpolation</summary>
+      <description>Smooth dial transitions using asymmetric attack and decay easing curves.</description>
+    </key>
+
+    <!-- Hotkeys -->
+    <key name="dock-edit-hotkey" type="as">
+      <default>['&lt;Shift&gt;&lt;Super&gt;e']</default>
+      <summary>Edit Dock Hotkey</summary>
+      <description>Keybinding to enter in-situ dock customizer edit mode.</description>
+    </key>
+
+    <key name="overlay-hotkey" type="as">
+      <default>['&lt;Super&gt;c']</default>
+      <summary>Toggle Dock Visibility Hotkey</summary>
+      <description>Keybinding to show or hide the dock.</description>
+    </key>
+
+    <!-- Modular Widget Toggles & Ordering -->
+    <key name="dock-modules" type="as">
+      <default>['clock', 'cpu', 'memory_storage', 'network', 'processes', 'connections']</default>
+      <summary>Visual order of Dock Modules</summary>
+      <description>Array of module identifiers determining the visual stacking sequence in the dock.</description>
+    </key>
+
+    <key name="show-clock" type="b">
+      <default>true</default>
+      <summary>Show Clock and Date</summary>
+      <description>Enable or disable the clock and date dial.</description>
+    </key>
+
+    <key name="show-cpu" type="b">
+      <default>true</default>
+      <summary>Show CPU Cluster</summary>
+      <description>Enable or disable the CPU package and multi-core dials.</description>
+    </key>
+
+    <key name="show-memory" type="b">
+      <default>true</default>
+      <summary>Show Memory Gauge</summary>
+      <description>Enable or disable the RAM utilization dial.</description>
+    </key>
+
+    <key name="show-disk" type="b">
+      <default>true</default>
+      <summary>Show Storage Gauge</summary>
+      <description>Enable or disable the Disk space dial.</description>
+    </key>
+
+    <key name="show-network" type="b">
+      <default>true</default>
+      <summary>Show Network Gauge</summary>
+      <description>Enable or disable the Network I/O speed dials.</description>
+    </key>
+
+    <key name="show-processes" type="b">
+      <default>false</default>
+      <summary>Show Top Processes Tray</summary>
+      <description>Enable the expandable top processes tray.</description>
+    </key>
+
+    <key name="show-connections" type="b">
+      <default>false</default>
+      <summary>Show Network Connections Tray</summary>
+      <description>Enable the expandable active sockets tray.</description>
+    </key>
+
+    <!-- Top Bar Micro-Tray Pill -->
+    <key name="topbar-show-pill" type="b">
+      <default>true</default>
+      <summary>Show Top Bar Micro-Tray Pill</summary>
+      <description>Show glanceable telemetry micro-badges in GNOME top panel.</description>
+    </key>
+
+    <key name="topbar-metrics" type="as">
+      <default>['ram', 'cpu']</default>
+      <summary>Top Bar Metrics</summary>
+      <description>List of metrics to show in top bar: 'ram', 'cpu', 'temp', 'net'.</description>
+    </key>
+
+    <key name="topbar-alert-threshold" type="i">
+      <default>85</default>
+      <summary>Top Bar Alert Threshold</summary>
+      <description>Percent utilization at which top bar badges shift to alert color.</description>
+    </key>
+  </schema>
+</schemalist>

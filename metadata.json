@@ -1,0 +1,9 @@
+{
+  "name": "Prime Overlay",
+  "description": "Modern, high-performance sci-fi desktop system monitor overlay inspired by Conky-Prime.",
+  "uuid": "prime-overlay@autumn",
+  "shell-version": ["50"],
+  "url": "https://github.com/1Jamie/conky-prime",
+  "settings-schema": "org.gnome.shell.extensions.prime-overlay",
+  "version": 1
+}
