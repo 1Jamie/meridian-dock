@@ -123,7 +123,7 @@ gjs -m tests/test-engines.js
 
 ## Release
 
-When you want a pack on GitHub, run the Release workflow. It reads `version` from `metadata.json`, builds `meridian-dock@autumn.shell-extension.zip`, and tags `v<version>`.
+When you want a pack on GitHub, run the Release workflow. It reads `version` from `metadata.json`, zips the extension files (not `legacy/`, screenshots, or tests), and tags `v<version>`. Download `meridian-dock@autumn.shell-extension.zip` from the release and install it with `gnome-extensions install`.
 
 ```bash
 gh workflow run release.yml

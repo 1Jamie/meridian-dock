@@ -18,13 +18,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install gnome-extensions
-        run: |
-          sudo apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gnome-shell
-
       - name: Set version
         if: ${{ inputs.version != '' }}
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
         run: |
           python3 - << 'PY'
           import json
@@ -36,26 +33,9 @@ jobs:
               json.dump(meta, handle, indent=2)
               handle.write("\n")
           PY
-        env:
-          RELEASE_VERSION: ${{ inputs.version }}
 
       - name: Pack
-        run: |
-          mkdir -p dist
-          gnome-extensions pack -f -o dist \
-            --extra-source=src \
-            --extra-source=prefs \
-            --extra-source=LICENSE \
-            --schema=schemas/org.gnome.shell.extensions.meridian-dock.gschema.xml \
-            .
-          staged=$(mktemp -d)
-          unzip -q -d "$staged" dist/meridian-dock@autumn.shell-extension.zip
-          glib-compile-schemas "$staged/schemas"
-          rm -f dist/meridian-dock@autumn.shell-extension.zip
-          (
-            cd "$staged"
-            zip -qr "$OLDPWD/dist/meridian-dock@autumn.shell-extension.zip" .
-          )
+        run: bash scripts/pack.sh dist
 
       - name: Publish
         env:
@@ -66,9 +46,4 @@ jobs:
           gh release create "$tag" dist/meridian-dock@autumn.shell-extension.zip \
             --repo "$GITHUB_REPOSITORY" \
             --title "$tag" \
-            --notes "$(cat <<EOF
-          gnome shell 50 pack.
-
-          zip is meridian-dock@autumn.shell-extension.zip
-          EOF
-          )"
+            --notes "gnome shell 50 pack. install with: gnome-extensions install meridian-dock@autumn.shell-extension.zip"
