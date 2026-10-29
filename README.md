@@ -1,10 +1,8 @@
 # Meridian Dock
 
-A GNOME Shell 50 extension that parks a sci-fi system monitor on the edge of the desktop. Clock, CPU, memory, disk, and network are drawn as Cairo dials. Process and connection lists tuck into trays under the cards, and a small pill in the top bar shows the numbers you actually glance at.
+GNOME Shell 50 extension. It's a system monitor that sits on the edge of the screen: clock, CPU, memory, disk, and network, drawn as dials. Process and connection lists are trays under the cards, and you can put a small pill in the top bar if you want those numbers up there too.
 
-This used to be a Conky config. The old `.conkyrc` and Lua dashboard are still in [`legacy/`](legacy/). The extension keeps that look and reads `/proc` (and NetworkManager, for the local address) from inside the Shell, so it runs on Wayland and on atomic desktops like Silverblue, Bazzite, and Kinoite without layering Conky onto the host.
-
-[![GNOME 50](https://img.shields.io/badge/GNOME-50-blue.svg)](https://extensions.gnome.org)
+This started as a Conky config. The old `.conkyrc` and Lua dashboard are in [`legacy/`](legacy/). The extension keeps that general look, but it reads `/proc` in the Shell (NetworkManager for the local address), so it runs on Wayland. On Silverblue, Bazzite, or Kinoite you don't have to layer Conky onto the host.
 
 GPL-3. See [LICENSE](LICENSE).
 
@@ -45,11 +43,11 @@ GPL-3. See [LICENSE](LICENSE).
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="screen-shots/topbar-pill.png" width="320" alt="Top-bar telemetry pill"><br>
+      <img src="screen-shots/topbar-pill.png" width="320" alt="Top-bar pill"><br>
       Top-bar pill
     </td>
     <td width="50%" align="center">
-      <img src="screen-shots/topbar-menu.png" width="320" alt="Top-bar telemetry menu"><br>
+      <img src="screen-shots/topbar-menu.png" width="320" alt="Top-bar menu"><br>
       Top-bar menu
     </td>
   </tr>
@@ -74,29 +72,31 @@ GPL-3. See [LICENSE](LICENSE).
 
 ---
 
-## What you get
+## Usage
 
-The dock sticks to the right, left, top, or bottom of a monitor. **Full Edge** runs the length of that edge and reserves the space, so maximized windows stop short of it. **Floating Island** is a shorter stack, aligned to the start, center, or end. `<Super>c` hides the dock and gives the edge back. `<Shift><Super>e` opens a customizer on the desktop: drag cards into a new order, pick the edge and the span, and turn modules on or off without opening the preferences window.
+Left, right, top, or bottom. **Full Edge** runs the length of that edge and can reserve the space, so maximized windows stop short of the dock. On a monitor with a top bar, a side dock starts under the bar instead of covering it. **Floating Island** is the short version, aligned to the start, center, or end.
 
-The cards are:
+`<Super>c` hides the dock and gives the edge back. `<Shift><Super>e` opens the customizer on the desktop: drag cards into a new order, change the edge, and turn modules on or off.
 
-- **Clock.** Rings for hours, minutes, and seconds, an analog face, or a digital readout, plus uptime.
-- **CPU.** Package load, frequency, temperature, and a sparkline per thread.
-- **Memory.** Used and total, and swap.
-- **Disk.** `/` and home (`/var/home` or `/home`). On atomic systems where `/` is a tiny composefs, the writable home filesystem is shown instead.
-- **Network.** Upload and download, the interface that owns the default route, and the local address from NetworkManager. If NetworkManager is not there, the address comes from `/proc/net/fib_trie`.
+The cards:
 
-Two trays sit under the cards. **Top processes** is the busy stuff from `/proc`. Click a row to raise that app, or to open System Monitor when it is installed. **Connections** lists established and listening TCP sockets from `/proc/net/tcp` and `/proc/net/tcp6`, with a process name when the socket inode can be matched. Sampling for those lists runs while a tray is open, and while a horizontal dock is showing its collapsed summary.
+- **Clock.** Rings, an analog face, or digital, plus uptime.
+- **CPU.** Load, frequency, temperature, and a sparkline per thread.
+- **Memory.** Used, total, and swap.
+- **Disk.** `/` and home (`/var/home` or `/home`). If `/` is a tiny composefs, it shows the writable home filesystem instead.
+- **Network.** Upload and download, the interface with the default route, and the local address from NetworkManager. If NetworkManager isn't there, the address comes from `/proc/net/fib_trie`.
 
-The top-bar pill is optional. It can show CPU, RAM, temperature, and network speeds, and it shifts to the alert color when CPU or RAM crosses the threshold you set. Its menu opens the customizer and the preferences window.
+**Top processes** is the busy stuff from `/proc`. Click a row to raise that app, or to open System Monitor when it's installed. **Connections** lists established and listening TCP from `/proc/net/tcp` and `/proc/net/tcp6`, with a process name when the socket inode matches. Those lists are only sampled while a tray is open, or while a horizontal dock is showing its collapsed summary.
 
-Preferences are a normal Libadwaita window: which monitor and edge, thickness, margin, corner radius, opacity, scale, and a theme (cyan, white, amber, or green). The clock can be rings, an analog dial, or digital. Core stats poll every 1 to 10 seconds. Module order and visibility live on their own page.
+The top-bar pill is optional. CPU, RAM, temperature, and network speeds, and it shifts color when CPU or RAM crosses the threshold you set. The menu opens the customizer and preferences.
+
+Preferences are a normal Libadwaita window: monitor, edge, thickness, margin, corner radius, opacity, scale, and a theme (cyan, white, amber, or green). The clock can be rings, analog, or digital. Stats poll every 1 to 10 seconds. Module order is its own page.
 
 ---
 
 ## Install
 
-You need GNOME Shell 50. From a clone of this repo (the path below assumes `~/src/meridian-dock`):
+You need GNOME Shell 50. This assumes the clone is at `~/src/meridian-dock`:
 
 ```bash
 mkdir -p ~/.local/share/gnome-shell/extensions
@@ -104,15 +104,15 @@ ln -sfn ~/src/meridian-dock ~/.local/share/gnome-shell/extensions/meridian-dock@
 glib-compile-schemas schemas/
 ```
 
-Then start a fresh Shell. On Wayland that means logging out and back in. On X11, Alt+F2 and `r` is enough. Turning the extension off and on again reuses the JavaScript already loaded in that Shell, so it will not pick up edits until you restart.
+Then restart the Shell. On Wayland, log out and back in. On X11, Alt+F2 and `r`. Disable and enable won't pick up code changes, because the Shell keeps the JavaScript it already loaded.
 
 ```bash
 gnome-extensions enable meridian-dock@autumn
 ```
 
-Open preferences from the Extensions app, the top-bar menu, or `gnome-extensions prefs meridian-dock@autumn`.
+Preferences are in the Extensions app, the top-bar menu, or `gnome-extensions prefs meridian-dock@autumn`.
 
-The `/proc` parsers can be checked on their own, without loading the Shell UI:
+The `/proc` parsers can be checked without loading the Shell UI:
 
 ```bash
 gjs -m tests/test-engines.js
@@ -122,9 +122,9 @@ gjs -m tests/test-engines.js
 
 ## Layout
 
-`extension.js` enables and disables the extension. Preferences live in `prefs.js` and the Libadwaita pages under `prefs/`. The Shell side is `src/`: `app.js` wires things together, `dock/` places the dock and handles dragging, `dials/` is the widgets, `metrics/` polls, and `engine/` is the `/proc` and D-Bus readers. `engine/` stays free of Shell and GTK imports so `tests/test-engines.js` can run it under plain `gjs`.
+`extension.js` is enable and disable. Preferences are `prefs.js` and the pages under `prefs/`. The Shell side is `src/`: `app.js` ties it together, `dock/` places the dock and handles dragging, `dials/` is the widgets, `metrics/` polls, and `engine/` reads `/proc` and D-Bus. `engine/` doesn't import Shell or GTK, so `tests/test-engines.js` can run under plain `gjs`.
 
-Settings use the schema `org.gnome.shell.extensions.meridian-dock` (`schemas/`, also named in `metadata.json`). The UUID is `meridian-dock@autumn`.
+Settings schema is `org.gnome.shell.extensions.meridian-dock`, named in `metadata.json`. The UUID is `meridian-dock@autumn`.
 
 ```plaintext
 meridian-dock/

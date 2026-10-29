@@ -332,6 +332,7 @@
    ========================================================================= */
 
 .meridian-dock-host {
+    transition-property: opacity;
     transition-duration: 200ms;
 }
 

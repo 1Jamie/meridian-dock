@@ -17,10 +17,16 @@ export class DockLayout {
         this._userHidden = false;
         this._overviewSuppressed = false;
         this._chromeAdded = false;
+        this._strutsEnabled = null;
+        this._placed = null;
+        this._clearance = null;
         this._idleRelayoutId = null;
         this._overviewSignals = [];
         this._monitorsChangedId = null;
+        this._panelAllocationId = null;
         this._host = null;
+        this._frame = null;
+        this._spacer = null;
         this._inner = null;
     }
 
@@ -56,10 +62,22 @@ export class DockLayout {
         this._host = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             style_class: 'meridian-dock-host',
-            reactive: true,
-            track_hover: true,
+            reactive: false,
             x_expand: false,
             y_expand: false,
+        });
+        this._spacer = new St.Widget({
+            reactive: false,
+            x_expand: true,
+            height: 0,
+            visible: false,
+        });
+        this._frame = new St.BoxLayout({
+            orientation: Clutter.Orientation.VERTICAL,
+            reactive: true,
+            track_hover: true,
+            x_expand: true,
+            y_expand: true,
         });
         this._inner = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
@@ -67,11 +85,16 @@ export class DockLayout {
             x_expand: true,
             y_expand: true,
         });
-        this._host.add_child(this._inner);
+        this._host.add_child(this._spacer);
+        this._host.add_child(this._frame);
+        this._frame.add_child(this._inner);
         this.applyModuleVisibility();
         this.applyCardPlacement();
         this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => {
             this.applyRelayout();
+        });
+        this._panelAllocationId = Main.layoutManager.panelBox.connect('notify::allocation', () => {
+            this._onPanelAllocation();
         });
         this._overviewSignals = [
             Main.overview.connect('showing', () => this._onOverviewShowing()),
@@ -81,27 +104,86 @@ export class DockLayout {
     }
 
     _wantsStruts() {
-        if (this._userHidden || this._overviewSuppressed)
+        if (this._userHidden)
             return false;
         if (this._settings.get_string('dock-length-mode') !== 'fill')
             return false;
         return this._settings.get_boolean('dock-affects-struts');
     }
 
+    _topBarClearance(monitor) {
+        const panel = Main.layoutManager.panelBox;
+        const primary = Main.layoutManager.primaryMonitor;
+        if (!panel || !primary || !monitor)
+            return 0;
+        if (monitor.x !== primary.x || monitor.y !== primary.y)
+            return 0;
+        if (monitor.width !== primary.width || monitor.height !== primary.height)
+            return 0;
+        return Math.max(0, Math.round(panel.height));
+    }
+
+    _onPanelAllocation() {
+        if (!this._host)
+            return;
+        const clearance = this._topBarClearance(this.getMonitor());
+        if (clearance === this._clearance)
+            return;
+        this.applyRelayout();
+    }
+
+    _raiseHost() {
+        if (this._host && Main.layoutManager.uiGroup.contains(this._host))
+            Main.layoutManager.uiGroup.set_child_above_sibling(this._host, null);
+    }
+
+    _syncPointer() {
+        if (!this._frame || !this._host)
+            return;
+        this._frame.reactive = this._host.visible && !this._userHidden && !this._overviewSuppressed;
+    }
+
+    _placeHost(force) {
+        if (!this._host || !this._placed)
+            return;
+        const {x, y, width, height} = this._placed;
+        this._host.set_position(x, y);
+        if (force && this._chromeAdded && width > 1)
+            this._host.set_size(width - 1, height);
+        this._host.set_size(width, height);
+    }
+
+    _releaseChrome() {
+        if (!this._chromeAdded || !this._host)
+            return;
+        Main.layoutManager.removeChrome(this._host);
+        this._chromeAdded = false;
+        this._strutsEnabled = null;
+    }
+
     _syncChrome() {
         if (!this._host)
             return;
-        if (this._chromeAdded) {
-            Main.layoutManager.removeChrome(this._host);
-            this._chromeAdded = false;
+        if (this._userHidden) {
+            this._syncPointer();
+            return;
         }
-        Main.layoutManager.addTopChrome(this._host, {
-            affectsStruts: this._wantsStruts(),
-            trackFullscreen: false,
-        });
-        this._chromeAdded = true;
-        if (Main.layoutManager.uiGroup.contains(this._host))
-            Main.layoutManager.uiGroup.set_child_above_sibling(this._host, null);
+        const affectsStruts = this._wantsStruts();
+        if (!this._chromeAdded || this._strutsEnabled !== affectsStruts) {
+            if (this._chromeAdded) {
+                Main.layoutManager.removeChrome(this._host);
+                this._chromeAdded = false;
+            }
+            Main.layoutManager.addTopChrome(this._host, {
+                affectsStruts,
+                trackFullscreen: false,
+            });
+            this._chromeAdded = true;
+            this._strutsEnabled = affectsStruts;
+            this._placeHost(true);
+        }
+        this._raiseHost();
+        this._syncPointer();
     }
 
     attach() {
@@ -187,7 +269,7 @@ export class DockLayout {
             return;
         this._userHidden = !this._userHidden;
         if (this._userHidden) {
-            this._syncChrome();
+            this._syncPointer();
             this._host.ease({
                 opacity: 0,
                 duration: 200,
@@ -195,12 +277,13 @@ export class DockLayout {
                 onComplete: () => {
                     if (this._userHidden && this._host) {
                         this._host.visible = false;
-                        this._syncChrome();
+                        this._releaseChrome();
                     }
                 },
             });
         } else {
             this._host.visible = true;
+            this._syncPointer();
             this._syncChrome();
             this._host.ease({
                 opacity: 255,
@@ -216,6 +299,7 @@ export class DockLayout {
         const show = this._settings.get_boolean('show-in-overview');
         this._overviewSuppressed = !show;
         this._host.visible = show && !this._userHidden;
+        this._syncPointer();
         this._syncChrome();
     }
 
@@ -226,10 +310,11 @@ export class DockLayout {
         this._overviewSuppressed = !show;
         if (!show) {
             this._host.visible = false;
-        } else {
+        } else if (!this._userHidden) {
             this._host.visible = true;
             this._host.opacity = 255;
         }
+        this._syncPointer();
         this._syncChrome();
     }
 
@@ -244,6 +329,7 @@ export class DockLayout {
             this._host.visible = true;
             this._host.opacity = 255;
         }
+        this._syncPointer();
         this._syncChrome();
     }
 
@@ -267,21 +353,17 @@ export class DockLayout {
         const targetThickness = Math.round(thickness * scale);
         const orient = isVertical ? Clutter.Orientation.VERTICAL : Clutter.Orientation.HORIZONTAL;
 
+        this._host.set_orientation(Clutter.Orientation.VERTICAL);
+        this._frame.set_orientation(orient);
         this._inner.set_orientation(orient);
-        this._host.set_orientation(orient);
         this._procsTray.setHorizontal(!isVertical);
         this._socketsTray.setHorizontal(!isVertical);
 
-        if (isVertical) {
-            this._host.remove_style_class_name('meridian-dock-horizontal');
-            this._host.add_style_class_name('meridian-dock-vertical');
-            this._inner.remove_style_class_name('meridian-dock-horizontal');
-            this._inner.add_style_class_name('meridian-dock-vertical');
-        } else {
-            this._host.remove_style_class_name('meridian-dock-vertical');
-            this._host.add_style_class_name('meridian-dock-horizontal');
-            this._inner.remove_style_class_name('meridian-dock-vertical');
-            this._inner.add_style_class_name('meridian-dock-horizontal');
+        const orientClass = isVertical ? 'meridian-dock-vertical' : 'meridian-dock-horizontal';
+        const otherClass = isVertical ? 'meridian-dock-horizontal' : 'meridian-dock-vertical';
+        for (const actor of [this._host, this._frame, this._inner]) {
+            actor.remove_style_class_name(otherClass);
+            actor.add_style_class_name(orientClass);
         }
 
         let posX;
@@ -289,72 +371,84 @@ export class DockLayout {
         let hostWidth;
         let hostHeight;
 
+        const clearance = this._topBarClearance(monitor);
+        this._clearance = clearance;
+        let topSpacer = 0;
+
         if (isVertical) {
             hostWidth = targetThickness;
             if (lengthMode === 'fill') {
-                hostHeight = monitor.height;
+                hostHeight = Math.max(120, monitor.height - clearance);
                 posX = pos === 'left' ? monitor.x : (monitor.x + monitor.width - hostWidth);
-                posY = monitor.y;
+                posY = monitor.y + clearance;
                 const edge = pos === 'left' ? 'right' : 'left';
-                this._host.set_style(
+                this._frame.set_style(
                     `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
                     `border-${edge}: 1px solid rgba(255, 255, 255, 0.12); ` +
-                    `padding: ${margin}px 8px; width: ${hostWidth}px; height: ${hostHeight}px;`
+                    `padding: ${margin}px 8px;`
                 );
             } else {
                 const [, prefHeight] = this._inner.get_preferred_height(hostWidth);
-                const maxAvailableHeight = monitor.height - (margin * 2);
+                const maxAvailableHeight = monitor.height - clearance - (margin * 2);
                 hostHeight = Math.min(maxAvailableHeight, Math.max(120, prefHeight + 20));
                 posX = pos === 'left' ? (monitor.x + margin) : (monitor.x + monitor.width - hostWidth - margin);
+                const startY = monitor.y + clearance + margin;
                 if (alignment === 'start')
-                    posY = monitor.y + margin;
+                    posY = startY;
                 else if (alignment === 'end')
                     posY = monitor.y + monitor.height - hostHeight - margin;
                 else
-                    posY = monitor.y + Math.round((monitor.height - hostHeight) / 2);
-                this._host.set_style(
+                    posY = monitor.y + clearance + Math.round((monitor.height - clearance - hostHeight) / 2);
+                posY = Math.max(startY, posY);
+                this._frame.set_style(
                     `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
                     `border: 1px solid rgba(255, 255, 255, 0.15); ` +
                     `border-radius: ${radius}px; padding: 10px 8px; ` +
-                    `width: ${hostWidth}px; height: ${hostHeight}px; ` +
                     `box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);`
                 );
             }
+        } else if (lengthMode === 'fill') {
+            hostWidth = monitor.width;
+            posX = monitor.x;
+            if (pos === 'top') {
+                topSpacer = clearance;
+                hostHeight = targetThickness + topSpacer;
+                posY = monitor.y;
+            } else {
+                hostHeight = targetThickness;
+                posY = monitor.y + monitor.height - hostHeight;
+            }
+            const edge = pos === 'top' ? 'bottom' : 'top';
+            this._frame.set_style(
+                `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
+                `border-${edge}: 1px solid rgba(255, 255, 255, 0.12); ` +
+                `padding: 8px ${margin}px;`
+            );
         } else {
             hostHeight = targetThickness;
-            if (lengthMode === 'fill') {
-                hostWidth = monitor.width;
-                posX = monitor.x;
-                posY = pos === 'top' ? monitor.y : (monitor.y + monitor.height - hostHeight);
-                const edge = pos === 'top' ? 'bottom' : 'top';
-                this._host.set_style(
-                    `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
-                    `border-${edge}: 1px solid rgba(255, 255, 255, 0.12); ` +
-                    `padding: 8px ${margin}px; width: ${hostWidth}px; height: ${hostHeight}px;`
-                );
-            } else {
-                const [, prefWidth] = this._inner.get_preferred_width(hostHeight);
-                const maxAvailableWidth = monitor.width - (margin * 2);
-                hostWidth = Math.min(maxAvailableWidth, Math.max(260, prefWidth + 24));
-                posY = pos === 'top' ? (monitor.y + margin) : (monitor.y + monitor.height - hostHeight - margin);
-                if (alignment === 'start')
-                    posX = monitor.x + margin;
-                else if (alignment === 'end')
-                    posX = monitor.x + monitor.width - hostWidth - margin;
-                else
-                    posX = monitor.x + Math.round((monitor.width - hostWidth) / 2);
-                this._host.set_style(
-                    `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
-                    `border: 1px solid rgba(255, 255, 255, 0.15); ` +
-                    `border-radius: ${radius}px; padding: 8px 12px; ` +
-                    `width: ${hostWidth}px; height: ${hostHeight}px; ` +
-                    `box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);`
-                );
-            }
+            const [, prefWidth] = this._inner.get_preferred_width(hostHeight);
+            const maxAvailableWidth = monitor.width - (margin * 2);
+            hostWidth = Math.min(maxAvailableWidth, Math.max(260, prefWidth + 24));
+            const topLimit = monitor.y + clearance + margin;
+            posY = pos === 'top' ? topLimit : (monitor.y + monitor.height - hostHeight - margin);
+            if (alignment === 'start')
+                posX = monitor.x + margin;
+            else if (alignment === 'end')
+                posX = monitor.x + monitor.width - hostWidth - margin;
+            else
+                posX = monitor.x + Math.round((monitor.width - hostWidth) / 2);
+            this._frame.set_style(
+                `background-color: rgba(10, 14, 22, ${dockAlpha}); ` +
+                `border: 1px solid rgba(255, 255, 255, 0.15); ` +
+                `border-radius: ${radius}px; padding: 8px 12px; ` +
+                `box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);`
+            );
         }
 
-        this._host.set_position(posX, posY);
-        this._host.set_size(hostWidth, hostHeight);
+        this._spacer.height = topSpacer;
+        this._spacer.visible = topSpacer > 0;
+        this._placed = {x: posX, y: posY, width: hostWidth, height: hostHeight};
+        this._placeHost(false);
         this._syncChrome();
         if (this._onRelayout)
             this._onRelayout();
@@ -372,6 +466,10 @@ export class DockLayout {
             Main.layoutManager.disconnect(this._monitorsChangedId);
             this._monitorsChangedId = null;
         }
+        if (this._panelAllocationId) {
+            Main.layoutManager.panelBox.disconnect(this._panelAllocationId);
+            this._panelAllocationId = null;
+        }
         if (this._chromeAdded && this._host) {
             Main.layoutManager.removeChrome(this._host);
             this._chromeAdded = false;
@@ -379,6 +477,8 @@ export class DockLayout {
         if (this._host) {
             this._host.destroy();
             this._host = null;
+            this._frame = null;
+            this._spacer = null;
             this._inner = null;
         }
         this._onRelayout = null;
