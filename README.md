@@ -120,6 +120,23 @@ gjs -m tests/test-engines.js
 
 ---
 
+
+## Release
+
+When you want a pack on GitHub, run the Release workflow. It reads `version` from `metadata.json`, builds `meridian-dock@autumn.shell-extension.zip`, and tags `v<version>`.
+
+```bash
+gh workflow run release.yml
+```
+
+Pass a version if you want the zip to use something other than the number already in `metadata.json`:
+
+```bash
+gh workflow run release.yml -f version=2
+```
+
+Bump `metadata.json` yourself if you want the repo to match the tag. The workflow only changes the copy it packs.
+
 ## Layout
 
 `extension.js` is enable and disable. Preferences are `prefs.js` and the pages under `prefs/`. The Shell side is `src/`: `app.js` ties it together, `dock/` places the dock and handles dragging, `dials/` is the widgets, `metrics/` polls, and `engine/` reads `/proc` and D-Bus. `engine/` doesn't import Shell or GTK, so `tests/test-engines.js` can run under plain `gjs`.

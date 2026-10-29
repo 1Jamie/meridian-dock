@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version number. Leave empty to use metadata.json.
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install gnome-extensions
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gnome-shell
+
+      - name: Set version
+        if: ${{ inputs.version != '' }}
+        run: |
+          python3 - << 'PY'
+          import json
+          import os
+          path = "metadata.json"
+          meta = json.load(open(path))
+          meta["version"] = int(os.environ["RELEASE_VERSION"])
+          with open(path, "w") as handle:
+              json.dump(meta, handle, indent=2)
+              handle.write("\n")
+          PY
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+
+      - name: Pack
+        run: |
+          mkdir -p dist
+          gnome-extensions pack -f -o dist \
+            --extra-source=src \
+            --extra-source=prefs \
+            --extra-source=LICENSE \
+            --schema=schemas/org.gnome.shell.extensions.meridian-dock.gschema.xml \
+            .
+          staged=$(mktemp -d)
+          unzip -q -d "$staged" dist/meridian-dock@autumn.shell-extension.zip
+          glib-compile-schemas "$staged/schemas"
+          rm -f dist/meridian-dock@autumn.shell-extension.zip
+          (
+            cd "$staged"
+            zip -qr "$OLDPWD/dist/meridian-dock@autumn.shell-extension.zip" .
+          )
+
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(python3 -c 'import json; print(json.load(open("metadata.json"))["version"])')
+          tag="v${version}"
+          gh release create "$tag" dist/meridian-dock@autumn.shell-extension.zip \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$tag" \
+            --notes "$(cat <<EOF
+          gnome shell 50 pack.
+
+          zip is meridian-dock@autumn.shell-extension.zip
+          EOF
+          )"
