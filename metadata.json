@@ -2,7 +2,7 @@
   "name": "Meridian Dock",
   "description": "A sci-fi system monitor dock for GNOME Shell, with dials for the clock, CPU, memory, disk, and network.",
   "uuid": "meridian-dock@autumn",
-  "shell-version": ["50"],
+  "shell-version": ["50", "51"],
   "url": "https://github.com/1Jamie/meridian-dock",
   "settings-schema": "org.gnome.shell.extensions.meridian-dock",
   "version": 1
